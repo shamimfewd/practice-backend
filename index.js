@@ -29,9 +29,14 @@ async function run() {
       .db("backendPracticeDB")
       .collection("backendData");
 
-    app.post("/testData", async (req, res) => {
+    app.post("/postData", async (req, res) => {
       const item = req.body;
       const result = await dataCollection.insertOne(item);
+      res.send(result);
+    });
+
+    app.get("/getAllData", async (req, res) => {
+      const result = await dataCollection.find().toArray();
       res.send(result);
     });
 

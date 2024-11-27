@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cors = require("cors");
 const port = process.env.PORT || 5000;
 
@@ -37,6 +37,13 @@ async function run() {
 
     app.get("/getAllData", async (req, res) => {
       const result = await dataCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.delete("/deleteData/:id", async (req, res) => {
+      const id = req.params.id;
+      const quire = { _id: new ObjectId(id) };
+      const result = await dataCollection.deleteOne(quire);
       res.send(result);
     });
 

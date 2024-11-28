@@ -47,6 +47,28 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/getUpdateData/:id", async (req, res) => {
+      const id = req.params.id;
+      const quire = { _id: new ObjectId(id) };
+      const result = await dataCollection.findOne(quire);
+      res.send(result);
+    });
+
+    app.put("/upData/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const optional = { upsert: true };
+      const data = {
+        $set: {
+          name: req.body.name,
+          price: req.body.price,
+        },
+      };
+
+      const result = await dataCollection.updateOne(filter, data, optional);
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
